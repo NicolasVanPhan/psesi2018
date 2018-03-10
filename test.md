@@ -71,6 +71,40 @@ Par conséquent, le véhicule aura besoin de se localiser pour construire la car
 Identification des taches du projet
 --------------------------------------------------------------------------------
 
+### Tache : Mise en place d'un mécanisme de gestion de threads
+
+#### Objectif :
+
+Obtenir une plateforme logicielle permettant l'exécution concurrente de plusieurs fils d'exécutions sur le microcontrolleur.
+
+L'application logicielle devra effectuer plusieurs fonctions en même temps :
+ * Déplacer le véhicule
+ * Déplacer le capteur
+ * Lire le capteur
+ * Construire la carte
+ * Se localiser
+ * choisir et actualiser un itinéraire
+ * Envoyer la carte au PC, au fur et à mesure de sa construction
+
+La solution logicielle appropriée pour la gestion de plusieurs taches en parallèle est la technique de multithreading. Chaque tache sera l'objet d'un fil d'exécution (thread) selon l'agencement suivant : 
+
+| Fonction à effectuer	| Tache associée	|
+| --------------------	| --------------	|
+| Déplacer le véhicule	| Commande des roues	|
+| Déplacer le capteur	| Gestion du capteur	|
+| Lire le capteur	| Gestion du capteur	|
+| Construire la carte	| Cartographie		|
+| Se localiser		| Localisation		|
+| Choisir un itinéraire	| Cartographie		|
+| Envoyer la carte au PC| Communication PC	|
+
+L'ensemble des taches présentes plus bas est exactement l'ensemble des "Taches associées" du tableau ci-dessus. La tache Cartographie est la tache maitresse, elle décidera de la politique d'ordonnancement entres les taches (elle sera le "chef d'orchestre") tandis que les autres taches seront des taches esclaves.
+
+#### Travail à réaliser :
+- [ ] Se renseigner sur les différentes solutions existantes en terme de mécanismes de gestion de threads.
+- [ ] Comparer ces solutions et choisir la plus appropriée dans notre cas
+- [ ] Implémenter le mécanisme choisi 
+
 ### Tache : Commande des roues
 
 #### Objectif : 
@@ -183,4 +217,19 @@ Plus précisément, il s'agira d'écrire une fonction qui effectue l'envoi d'une
   - [ ] Envoi d'un caractère, vérifier qu'une interruption est bien levée et que le caractère reçu est correct.
   - [ ] Envoi d'une chaine de caractères, même test
   - [ ] Plusieurs envois successifs, vérifier qu'aucun message n'est perdu.
+
+
+### Tache : Cartographie
+
+#### Objectif :
+
+Cette tache consiste en l'implémentation d'un algorithme de cartographie et localisation simultanées. Il s'agit de la tâche maitresse : c'est celle qui a le controle sur les autres dans la mesure où elle décide de l'ordonnancement des threads.
+
+#### Travail à réaliser :
+
+- [ ] Choisir un algorithme de cartographie et localisation simultanées
+- [ ] Implémenter l'algorithme choisi
+  - [ ] Implémenter un mécanisme de correction du déplacement du véhicule
+
+#### Validation :
 
