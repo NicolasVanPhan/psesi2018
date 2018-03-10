@@ -108,6 +108,8 @@ Plus précisément, il s’agit d’obtenir une ou plusieurs fonctions logiciell
 Obtenir un ensemble de fonctions permettant d'orienter le capteur et de
 récupérer l'information captée.
 
+#### Sous-tache : Récupération des informations du capteur
+
 #### Travail à réaliser
 
 - [ ] Concevoir l'interface électronique entre le capteur et le microcontrolleur
@@ -118,3 +120,40 @@ l'interfacage électronique à mettre en place pour alimenter le capteur et réc
   - [ ] Déterminer la donnée lue du capteur en fonction de la distance à laquelle l'obstacle se situe (pour cela, placerons un obstacle à différentes distances du capteur et noterons les différentes valeurs lues)
   - [ ] Déterminer la portée du capteur, la distance minimale et maximale au delà desquelles le capteur ne renvoie plus de donnée pertinente.
   - [ ] Ecrire une fonction donnant la distance mesurée par le capteur.
+
+#### Validation
+- [ ] Placer un objet à une distance d du capteur, vérifier que la fonction renvoie bien une distance correspondant à d.
+  - [ ] Effectuer une mesure avec un objet à distance minimale de portée du capteur
+    - [ ] Et ce avec un objet de plus de 30cm de largeur
+    - [ ] Avec un objet de 10cm de largeur
+    - [ ] Avec un objet de 5cm de largeur
+    - [ ] Avec un objet de 2cm de largeur
+  - [ ] Effectuer une mesure avec un objet à distance maximale de portée du capteur
+    - [ ] Et ce avec un objet de plus de 30cm de largeur
+    - [ ] Avec un objet de 10cm de largeur
+    - [ ] Avec un objet de 5cm de largeur
+    - [ ] Avec un objet de 2cm de largeur
+  - [ ] Effectuer une mesure avec un objet à distance intermédiaire dans la portée du capteur. 
+    - [ ] Et ce avec un objet de plus de 30cm de largeur
+    - [ ] Avec un objet de 10cm de largeur
+    - [ ] Avec un objet de 5cm de largeur
+    - [ ] Avec un objet de 2cm de largeur
+  
+
+#### Sous-tache : Controle de l'orientation du capteur 
+
+#### Travail à réaliser
+- [ ] Concevoir l'interface électronique permettant de contrôler l'orientation du capteur via un servomoteur
+  - [ ] Déterminer les différentes solutions permettant cet interfacage
+  - [ ] Implémenter la solution la plus appropriée
+- [ ] Ecrire la couche logicielle permettant d'orienter le capteur
+  - [ ] Déterminer le signal à envoyer en sortie du microcontrolleur en fonction de l'angle dans lequel on veut orienter le capteur.
+  - [ ] Ecrire une fonction prenant en entrée un angle et orientant le capteur à l'angle donné.
+
+#### Validation
+
+- [ ] Appeler la fonction d'orientation du capteur avec plusieurs angles et vérifier si le capteur s'oriente conformément à l'angle donné.
+  - [ ] Effectuer cet appel avec un angle de 0 rad/sec
+  - [ ] Effectuer cet appel avec un angle de +pi/2 rad/sec
+  - [ ] Effectuer cet appel avec un angle de -pi/2 rad/sec
+  - [ ] Effectuer cet appel avec des angles intermédiates (ex: pi/4, pi/6). 
