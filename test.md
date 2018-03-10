@@ -103,14 +103,14 @@ Plus précisément, il s’agit d’obtenir une ou plusieurs fonctions logiciell
 
 ### Tache : Gestion du capteur à ultrasons
 
-#### Objectif
+#### Objectif :
 
 Obtenir un ensemble de fonctions permettant d'orienter le capteur et de
 récupérer l'information captée.
 
 #### Sous-tache : Récupération des informations du capteur
 
-#### Travail à réaliser
+#### Travail à réaliser :
 
 - [ ] Concevoir l'interface électronique entre le capteur et le microcontrolleur
   - [ ] Se renseigner, notamment dans la documentation du capteur fourni, sur
@@ -121,7 +121,8 @@ l'interfacage électronique à mettre en place pour alimenter le capteur et réc
   - [ ] Déterminer la portée du capteur, la distance minimale et maximale au delà desquelles le capteur ne renvoie plus de donnée pertinente.
   - [ ] Ecrire une fonction donnant la distance mesurée par le capteur.
 
-#### Validation
+#### Validation :
+
 - [ ] Placer un objet à une distance d du capteur, vérifier que la fonction renvoie bien une distance correspondant à d.
   - [ ] Effectuer une mesure avec un objet à distance minimale de portée du capteur
     - [ ] Et ce avec un objet de plus de 30cm de largeur
@@ -142,7 +143,7 @@ l'interfacage électronique à mettre en place pour alimenter le capteur et réc
 
 #### Sous-tache : Controle de l'orientation du capteur 
 
-#### Travail à réaliser
+#### Travail à réaliser :
 - [ ] Concevoir l'interface électronique permettant de contrôler l'orientation du capteur via un servomoteur
   - [ ] Déterminer les différentes solutions permettant cet interfacage
   - [ ] Implémenter la solution la plus appropriée
@@ -150,10 +151,36 @@ l'interfacage électronique à mettre en place pour alimenter le capteur et réc
   - [ ] Déterminer le signal à envoyer en sortie du microcontrolleur en fonction de l'angle dans lequel on veut orienter le capteur.
   - [ ] Ecrire une fonction prenant en entrée un angle et orientant le capteur à l'angle donné.
 
-#### Validation
+#### Validation :
 
 - [ ] Appeler la fonction d'orientation du capteur avec plusieurs angles et vérifier si le capteur s'oriente conformément à l'angle donné.
   - [ ] Effectuer cet appel avec un angle de 0 rad/sec
   - [ ] Effectuer cet appel avec un angle de +pi/2 rad/sec
   - [ ] Effectuer cet appel avec un angle de -pi/2 rad/sec
   - [ ] Effectuer cet appel avec des angles intermédiates (ex: pi/4, pi/6). 
+
+### Tache : Communication avec le PC
+
+#### Objectif :
+
+Elaborer un mécanisme permettant à l'application d'envoyer et recevoir des messages depuis/vers un PC via une liaison sans fil.
+Plus précisément, il s'agira d'écrire une fonction qui effectue l'envoi d'une chaine de caractère vers le PC, un mécanisme d'interruption permettant de prévenir la tache maitresse de la réception d'un message, puis une deuxième fonction permettant de lire le message recu.
+
+#### Travail à réaliser :
+
+- [ ] Choix d'un module de communication sans-fil pour la liaison avec le PC.
+- [ ] Obtention ou réalisation d'un proramme côté PC permettant d'envoyer/recevoir des chaines de caractère via la liaison sans-fil
+- [ ] Ecriture d'une fonction (dans le programme du microcontrolleur) permettant d'envoyer des chaines de caractère
+- [ ] Ecriture d'une fonction permettant de détecter la réception d'une chaine de caractère, et de la lire dans ce cas là.
+
+#### Validation :
+
+- [ ] Vérification de la communication Arduino vers PC
+  - [ ] Envoi d'un caractère, vérifier si le caractère envoyé a bien été reçu côté PC.
+  - [ ] Envoi d'une chaine de caractères, vérifier l'intégrité de la chaine.
+  - [ ] Plusieurs envois successifs, vérifier que tous les envois aboutissent.
+- [ ] Vérification de la communication PC vers Arduino
+  - [ ] Envoi d'un caractère, vérifier qu'une interruption est bien levée et que le caractère reçu est correct.
+  - [ ] Envoi d'une chaine de caractères, même test
+  - [ ] Plusieurs envois successifs, vérifier qu'aucun message n'est perdu.
+
