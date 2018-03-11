@@ -233,3 +233,35 @@ Cette tache consiste en l'implémentation d'un algorithme de cartographie et loc
 
 #### Validation :
 
+Une première phase de validation consistera à surveiller la précision avec laquelle le véhicule mesure les distances et les angles car des mesures incorrectes entrainent une carte incorrecte.
+Pour cela, nous nous placerons en environnement connu (la carte sera déjà préchargée dans la mémoire du système) et le véhicule effectuera des déplacements pour voir s'il est correctement calibré.
+
+- [ ] Vérifier que le véhicule est géométriquement précis
+  - [ ] Vérifier la précision en translation. Il faut que le véhicule ait parcouru la distance donnée (à quelques cm près) et n'ait pas dévié (la trajectoire doit être droite).
+    - [ ] Ecrire une première tache maitresse faisant déplacer le véhicule de 10cm
+    - [ ] Idem pour 20cm
+    - [ ] Idem pour 2m
+    - [ ] Idem pour 10m
+  - [ ] Vérifier la précision en rotation
+    - [ ] Ecrire une tache maitresse effectuant : translation de 1m, rotation de alpha rad, translation de 1m, et Vérifier que la voiture tourne avec l'angle donné.
+      - [ ] Effectuer la vérification pour alpha = 0 (le véhicule doit simplement avancer de 2m)
+      - [ ] Pour alpha = 10, 20, 30, 40, 50, 60, 70, 80, 90 degrés
+      - [ ] Idem dans les négatifs : pour alpha = -10 à -90 degrés 
+    - [ ] Ecrire une tache maitresse effectuant parcours où il est censé revenir à son point de départ. Vérifier que la trajectoire parcourue est précise (plus ou moins quelques centimètres) et que le véhicule est bien retourné au point de départ.
+      - [ ] Effectuer un parcours carré : translation 1m puis rotation pi/2, et ce quatre fois.
+      - [ ] Effectuer un parcours octogonal : translation 50cm = et rotation pi/4, huit fois.
+      - [ ] Tester des parcours avec d'autres formes géométriques comportant plusieurs valeurs d'angles et de distances différentes
+
+La deuxième phase de test consiste à vérifier le coeur de l'algorithme de cartographie.
+Nous placerons le véhicule en environnement inconnu, le démarrerons et vérifierons l'exactitude de la carte retracée.
+A chaque test, il faudra vérifier trois choses :
+ - Vérifier que l'algorithme se termine bien, qu'il ne reste pas dans une boucle infinie
+ - Vérifier que le véhicule ne heurte pas d'obstacles
+ - A la fin, vérifier la précision géométrique de la carte reconstruite
+
+Ces tests seront effectuée dans des environnements de plus en plus complexes.
+
+- [ ] Vérifier que la carte est bien construite
+  - [ ] Placer le robot dans l'environnement le plus simple : un carré assez petit pour que les murs soient à portée du capteur
+  - [ ] Faire de même avec un obstacle central cette fois-ci
+  - [ ] Idem avec un terrain carré plus grand que la portée du capteur et des obstacles tous les mètres
