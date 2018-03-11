@@ -358,6 +358,13 @@ La tache de Cartographie au centre est la principale, c'est elle qui s'exécute 
 elle laisse la main aux autres taches, l'une après l'autre, et pendant quelques millisecondes,
 pour faire en sorte que toutes les actions gérées par les autres taches soient constamment effectuées en boucle et en parallèle. Il s'agit donc ici d'un pseudo-parallélisme réalisé par multiplexage temporel.
 
+ * Lorsque la tache Cartographie veut lire ou déplacer le capteur, elle passe la main au thread Gestion du capteur et ce-dernier met à jour dans la mémoire la distance à ostacle mesurée.
+ * Lorsque la tache Cartographie veut actualiser dans la mémoire la position du véhicule, elle commute vers le thread Localisation, qui lit la carte et la distance à obstacle pour en déduire la position du véhicule.
+ * Lorsque la tache Cartographie veut modifier la vitesse du véhicule, elle passe la main au thread Gestion des roues en lui donnant la vitesse voulue.
+ * Quand à la communication avec le PC, la tache Cartographie l'appelle lorsqu'ele veut envoyer un message ou lorsqu'elle a été prévenue par interruption qu'un message a été reçu et veut le lire.
+
+Le schema ci-dessous illustre un exemple d'ordonnancement des taches au cours du temps.
+
 [[[ ici chronogramme exemple de l'ordonnancement au cours du temps ]]]
 
 Calendrier et répartition des taches
