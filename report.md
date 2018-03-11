@@ -22,7 +22,7 @@ concevoir entièrement le prototype puis de retirer des parties du programme de
 cartographie pour que les étudiants les reconstruisent.
 Cet exercice a pour but de les sensibiliser aux enjeux de la programmation
 embarquée, notamment l'élaboration d'un algorithme optimisé pour répondre à
-des contraintes de temps-réel en puissance de calcul et espace mémoire limitées.
+des contraintes de temps-réel en puissance de calcul et espace mémoire limités.
 
 Ce projet sera réalisé en binôme et consistera à adapter et implémenter des solutions logicielles existantes en termes d'algorithmes de cartographie et de gestion de threads.
 
@@ -53,6 +53,8 @@ Nous commençons ce projet en disposant des outils suivants :
  - Un capteur à ultrasons et un servomoteur pour l’orienter
  - Une carte Arduino.
 
+[[[ ici photos de chacune des pièces fournies ]]]
+
 Au départ, le véhicule ne possède aucune information sur le terrain.
 
 ### Quels sont les résultats attendus ?
@@ -66,7 +68,6 @@ Dans notre cas, l’objectif sera le suivant :
  2. Dans le cas où le résultat de l’étude est positif, la réalisation d’un prototype fonctionnel.
  3. Dans le cas d'un résultat d'étude négatif, proposer de nouvelles solutions pour contourner les problèmes rencontrés (ajout d'un nouveau capteur, choix d'une microcontrolleur plus adapté etc.).
 
-
 Problématique
 --------------------------------------------------------------------------------
 
@@ -79,6 +80,24 @@ De plus, un second objectif sera de mettre en place un mécanisme logiciel perme
 
 Identification et validation des taches du projet
 --------------------------------------------------------------------------------
+
+Les différentes taches de ce projet sont les suivantes :
+ - Mise en place d'un mécanisme de gestion de threads
+ - Commande des roues
+ - Gestion du capteur à ultrasons
+ - Localisation
+ - Communication avec le PC
+ - Cartographie
+
+La commande des roues, la lecture et rotation du capteur, la localisation et cartographie sont des taches que le véhicule devra constamment être en train d'effectuer.
+Pour que le véhicule effectue toujours plusieurs choses à la fois, nous mettons en place un mécanisme de threads : chacune de ces taches sera un thread, et tous les threads seront exécutés en parallèle.
+Or, nous n'avons qu'un microcontrolleur avec un seul coeur, nous ne pouvons pas effectuer de réel parallélisme, ici nous contenterons de pseudo-parallélisme en effectuant un multiplexage temporel des différents threads : chacun des threads aura la main pendant un petit laps de temps (quelques millisecondes) puis viendra le tour du thread suivant, cela donnera l'illusion de parallélisme.
+
+Il y a deux catéories de threads :
+ - les threads exécutifs (ou esclaves) effectuent une action simple pendant une durée déterminée lorsqu'elles sont appelées, puis repassent la main.
+ - la tache maitresse (la tache de Cartographie) qui décide du thread à exécuter à chaque instant.
+
+Etant donné que la tache Cartographie se charge du comportement du véhicule à long terme alors que les autres threads n'effectuent que des mesures ou lectures ponctuelles, il est cohérent que la tache Cartographie soit la tache maitresse.
 
 ### Tache : Mise en place d'un mécanisme de gestion de threads
 
@@ -117,6 +136,7 @@ L'ensemble des taches présentées plus bas est exactement l'ensemble des "Tache
 #### Validation :
 
 Le but ici est de créer des threads effectuant quelques affichages pour vérifier que l'environnement mis en place est fonctionnel.
+L'affichage s'effectuera via une liaison série filaire entre la carte Arduino et le PC, cette liaison sera utilisée temporairement pour le debug tant que la liaison sans-fil n'aura pas été établie (tache Communication PC).
 
 - [ ] Ecriture d'un thread affichant "Hello world" en boucle. Vérifier que le thread s'exécute correctement
 - [ ] Ecriture de plusieurs threads ayant des affichages différents. Vérifier qu'ils s'exécutent correctement.
@@ -129,7 +149,7 @@ Le but ici est de créer des threads effectuant quelques affichages pour vérifi
 
 Pouvoir controler le déplacement du véhicule de manière logicielle.
 
-Plus précisément, il s’agit d’obtenir une ou plusieurs fonctions logicielles pouvant être appelée par un programme utilisateur et permettant de controller la vitesse des roues pour faire avancer et tourner le véhicule.
+Plus précisément, il s’agit d’obtenir une ou plusieurs fonctions logicielles pouvant être appelées par un programme utilisateur et permettant de controller la vitesse des roues pour faire avancer et tourner le véhicule.
 
 #### Travail à réaliser :
 
@@ -334,8 +354,28 @@ Le diagramme suivant schématise les données échangées entre les différentes
 
 ![Diagramme de communication entre les taches](./taches.png)
 
+La tache de Cartographie au centre est la principale, c'est elle qui s'exécute en premier,
+elle laisse la main aux autres taches, l'une après l'autre, et pendant quelques millisecondes,
+pour faire en sorte que toutes les actions gérées par les autres taches soient constamment effectuées en boucle et en parallèle. Il s'agit donc ici d'un pseudo-parallélisme réalisé par multiplexage temporel.
+
+[[[ ici chronogramme exemple de l'ordonnancement au cours du temps ]]]
+
 Calendrier et répartition des taches
 --------------------------------------------------------------------------------
+
+La tache de Cartographie dépend des taches "esclaves" et Gestion des Threads,
+aussi elle ne peut être entammée qu'après la complétion de ces dernières,
+nous commençons donc par ces taches "esclaves".
+
+La carte Arduino peut facilement communiquer avec le PC via une liaison série filaire
+donc la tache Communication sans-fil avec le PC est moins urgente que les autres,
+c'est pour cela que nous la plaçons de manière tardive dans le calendrier.
+
+Avec ces éléments, nous avons divisé le calendrier en quatre phases :
+ - Phase 1 : Nous commençerons avec la tache Gestion du capteur à ultrasons, elle comporte deux sous-taches et nous sommes deux, donc chacun prendra une sous-tache.
+ - Phase 2 : Nous continuons les taches "esclaves" avec la Commande des roues et la Localisation.
+ - Phase 3 : Cette phase commence pendant les vacances fin Avril, nous prenons donc plus de charge de travail pendant cette période en plaçant la Gestion des Threads et la Cartographie. 
+ - Phase 4 : Cette dernière phase consiste en la complétion de la tache principale, à savoir la Cartographie. Nous y ajoutons la tache Communication avec le PC.
 
 ![Diagramme de Gantt de la répartition des taches dans le temps et dans l'équipe](./gantt.png)
 
