@@ -47,11 +47,11 @@ Objectif
 ### Quelles sont les données initiales ?
 
 Nous commençons ce projet en disposant des outils suivants :
-Un châssis déjà construit
-Deux roues motrices et deux MCC pour les actionner
-Une roue avant, folle ou directrice, et un servomoteur pour l’orienter si elle est directrice
-Un capteur à ultrasons et un servomoteur pour l’orienter
-Une carte Arduino basé sur le microcontrolleur ….
+ - Un châssis déjà construit
+ - Deux roues motrices et deux MCC pour les actionner
+ - Une roue avant, folle ou directrice, et un servomoteur pour l’orienter si elle est directrice
+ - Un capteur à ultrasons et un servomoteur pour l’orienter
+ - Une carte Arduino.
 
 Au départ, le véhicule ne possède aucune information sur le terrain.
 
@@ -92,7 +92,7 @@ L'application logicielle devra effectuer plusieurs fonctions en même temps :
  * Lire le capteur
  * Construire la carte
  * Se localiser
- * choisir et actualiser un itinéraire
+ * Choisir et actualiser un itinéraire
  * Envoyer la carte au PC, au fur et à mesure de sa construction
 
 La solution logicielle appropriée pour la gestion de plusieurs taches en parallèle est la technique de multithreading. Chaque tache sera l'objet d'un fil d'exécution (thread) selon l'agencement suivant : 
@@ -107,7 +107,7 @@ La solution logicielle appropriée pour la gestion de plusieurs taches en parall
 | Choisir un itinéraire	| Cartographie		|
 | Envoyer la carte au PC| Communication PC	|
 
-L'ensemble des taches présentes plus bas est exactement l'ensemble des "Taches associées" du tableau ci-dessus. La tache Cartographie est la tache maitresse, elle décidera de la politique d'ordonnancement entres les taches (elle sera le "chef d'orchestre") tandis que les autres taches seront des taches esclaves.
+L'ensemble des taches présentées plus bas est exactement l'ensemble des "Taches associées" du tableau ci-dessus. La tache Cartographie est la tache maitresse, elle décidera de la politique d'ordonnancement entres les taches (elle sera le "chef d'orchestre") tandis que les autres taches seront des taches esclaves.
 
 #### Travail à réaliser :
 - [ ] Se renseigner sur les différentes solutions existantes en terme de mécanismes de gestion de threads.
@@ -128,6 +128,7 @@ Le but ici est de créer des threads effectuant quelques affichages pour vérifi
 #### Objectif : 
 
 Pouvoir controler le déplacement du véhicule de manière logicielle.
+
 Plus précisément, il s’agit d’obtenir une ou plusieurs fonctions logicielles pouvant être appelée par un programme utilisateur et permettant de controller la vitesse des roues pour faire avancer et tourner le véhicule.
 
 #### Travail à réaliser :
@@ -136,7 +137,7 @@ Plus précisément, il s’agit d’obtenir une ou plusieurs fonctions logiciell
   - [ ] Se documenter sur les différentes méthodes couramment utilisées pour interfacer une unité de commande faible-puissance (ici un microcontrolleur) et un moteur à courant continu.
   - [ ] Comparer ces différentes méthodes et sélectionner la plus appropriée
 - [ ] Concevoir le driver de controle des MCC
-  - [ ] Déterminer l’interface utilisateur (comment la fonction de commande des roues doit être appelée et avec quels arguments, par exemple est-ce que l’utilisateur fournit un vecteur vitesse que la fonction devra constamment suivre ou bien est-ce que l’utilisateur appelle la fonction pour aller à une vitesse v pendant n secondes)
+  - [ ] Déterminer l’interface utilisateur (comment la fonction de commande des roues doit être appelée et avec quels arguments, par exemple est-ce que l’utilisateur fournit un vecteur vitesse que la fonction devra constamment suivre ou bien est-ce que l’utilisateur appelle la fonction pour avancer de x mètres)
   - [ ] Déterminer les signaux de commande (en sortie du microcontrolleur) à envoyer pour commander les roues à une vitesse v.
   - [ ] Implémenter la fonction de commande des roues, envoyant les signaux appropriés à l’interface électronique des MCC en fonction des paramètres utilisateurs fournis.
 
@@ -145,7 +146,7 @@ Plus précisément, il s’agit d’obtenir une ou plusieurs fonctions logiciell
 - [ ] Commander les roues en translation avec une vitesse donnée et comparer la vitesse réelle du véhicule (mesurée à la règle et au chronomètre) avec la vitesse donnée en commande.
   - [ ] Test avec v = 0, le véhicule doit rester à l’arrêt
   - [ ] Test avec v = 0.5 m/s, chronométrer la durée nécéssaire au véhicule pour parcourir 1m, 2m, 5m, 10m.
-  - [ ] Effectuer le même test que 1.2 avec v = 1m/s
+  - [ ] Effectuer le même test avec v = 1m/s
   - [ ] Envoyer une suite de commande : 0.5 m/s pendant 1s puis 1m/s pendant 1s puis 0m/s, puis filmer le véhicule et mesurer sur la vidéo si sa vitesse au cours du temps correspond bien à la suite de commande effectuée.
 - [ ] Commander les roues en rotations, avec une vitesse de rotation donnée et comparer la vitesse réelle avec la vitesse désirée.
   - [ ] Test avec v = 0 rad/s, le véhicule ne doit pas tourner.
@@ -169,7 +170,7 @@ récupérer l'information captée.
 l'interfacage électronique à mettre en place pour alimenter le capteur et récupérer les données captées.
   - [ ] Réaliser cette interface
 - [ ] Ecrire la couche logicielle permettant d'accéder aux données captées
-  - [ ] Déterminer la donnée lue du capteur en fonction de la distance à laquelle l'obstacle se situe (pour cela, placerons un obstacle à différentes distances du capteur et noterons les différentes valeurs lues)
+  - [ ] Déterminer la donnée fournie par capteur en fonction de la distance à laquelle l'obstacle se situe (pour cela, nous placerons un obstacle à différentes distances du capteur et noterons les différentes valeurs lues)
   - [ ] Déterminer la portée du capteur, la distance minimale et maximale au delà desquelles le capteur ne renvoie plus de donnée pertinente.
   - [ ] Ecrire une fonction donnant la distance mesurée par le capteur.
 
@@ -212,16 +213,6 @@ l'interfacage électronique à mettre en place pour alimenter le capteur et réc
   - [ ] Effectuer cet appel avec des angles intermédiates (ex: pi/4, pi/6). 
 
 
-
-
-
-
-
-
-
-
-
-
 ### Tâche : Localisation
  
 #### Objectif :
@@ -260,28 +251,12 @@ En sortie de cette tâche à réaliser se présentera un thread mettant constamm
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ### Tache : Communication avec le PC
 
 #### Objectif :
 
-Elaborer un mécanisme permettant à l'application d'envoyer et recevoir des messages depuis/vers un PC via une liaison sans fil.
+Concevoir un mécanisme permettant à l'application d'échanger des messages avec un PC via une liaison sans fil.
+
 Plus précisément, il s'agira d'écrire une fonction qui effectue l'envoi d'une chaine de caractère vers le PC, un mécanisme d'interruption permettant de prévenir la tache maitresse de la réception d'un message, puis une deuxième fonction permettant de lire le message recu.
 
 #### Travail à réaliser :
@@ -350,6 +325,7 @@ Ces tests seront effectuée dans des environnements de plus en plus complexes.
   - [ ] Faire de même avec un obstacle central cette fois-ci
   - [ ] Idem avec un terrain carré plus grand que la portée du capteur et des obstacles tous les mètres
   - [ ] Idem avec un terrain octogonal. Cela sert à vérifier le bon fonctionnement du véhicule dans un environnement comportant des angles à 45 degrés.
+  - [ ] Construire un environnement plus complexe, avec des obstacles entre lesquels le véhicule ne pourra pas passer.
 
 Communication entre les taches
 --------------------------------------------------------------------------------
@@ -357,4 +333,9 @@ Communication entre les taches
 Le diagramme suivant schématise les données échangées entre les différentes taches.
 
 ![Diagramme de communication entre les taches](./taches.png)
+
+Calendrier et répartition des taches
+--------------------------------------------------------------------------------
+
+![Diagramme de Gantt de la répartition des taches dans le temps et dans l'équipe](./gantt.png)
 
