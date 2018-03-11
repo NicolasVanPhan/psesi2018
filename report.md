@@ -18,6 +18,8 @@ Cet exercice a pour but de les sensibiliser aux enjeux de la programmation
 embarquée, notamment l'élaboration d'un algorithme optimisé pour répondre à
 des contraintes de temps-réel en puissance de calcul et espace mémoire limitées.
 
+Ce projet sera réalisé en binôme et consistera à adapter et implémenter des solutions logicielles existantes en termes d'algorithmes de cartographie et de gestion de threads.
+
 ### Domaine de compétences requises
 
  * Programmation de microcontrolleur en C
@@ -41,7 +43,7 @@ Objectif
 Nous commençons ce projet en disposant des outils suivants :
 Un châssis déjà construit
 Deux roues motrices et deux MCC pour les actionner
-Une roue avant directrice et un servomoteur pour l’orienter
+Une roue avant, folle ou directrice, et un servomoteur pour l’orienter si elle est directrice
 Un capteur à ultrasons et un servomoteur pour l’orienter
 Une carte Arduino basé sur le microcontrolleur ….
 
@@ -54,18 +56,19 @@ Le véhicule explore le terrain et à la fin de son parcours, il obtient une rep
 La taille de la zone élémentaire est à définir plus précisément après une étude des limites du système en terme de précision de mesure, mais l’objectif serait d’atteindre une précision de l’ordre du cm.
 
 Dans notre cas, l’objectif sera le suivant :
- 1. Réalisation d’une étude de faisabilité déterminant s’il est possible d’aboutir à une cartographie du terrain avec pour seul objet de mesure un capteur à ultrasons.
+ 1. Réalisation d’une étude de faisabilité déterminant s’il est possible d’aboutir à une cartographie du terrain précise au centimètre près avec pour seul objet de mesure un capteur à ultrasons.
  2. Dans le cas où le résultat de l’étude est positif, la réalisation d’un prototype fonctionnel.
+ 3. Dans le cas d'un résultat d'étude négatif, proposer de nouvelles solutions pour contourner les problèmes rencontrés (ajout d'un nouveau capteur, choix d'une microcontrolleur plus adapté etc.).
 
 
 Problématique
 --------------------------------------------------------------------------------
 
-Contrairement à l’autres systèmes recevant des informations par GPS, par un accéléromètre ou autres données absolues, ici notre système ne possède qu’un capteur à ultrasons et ne recevra donc qu’une distance relative à la position du véhicule.
+Contrairement aux autres systèmes recevant des informations par GPS, par un accéléromètre ou autres données absolues, ici notre système ne possède qu’un capteur à ultrasons et ne recevra donc qu’une distance relative à la position du véhicule.
+
 Par conséquent, le véhicule aura besoin de se localiser pour construire la carte à partir des informations du capteur, sauf que le véhicule se localise par rapport à la carte donc il a besoin de connaître la carte pour se localiser. Ce problème “d’oeuf et de poule” est le problème de cartographie et localisation simulanées (SLAM Simultaneous Localization and Mapping) et ce sera la problématique principale de ce projet.
 
-
-
+De plus, un second objectif sera de mettre en place un mécanisme logiciel permettant l'exécution de plusieurs taches en parallèle car le véhicule devra en effet exécuter plusieurs actions en même temps.
 
 
 Identification des taches du projet
@@ -104,6 +107,8 @@ L'ensemble des taches présentes plus bas est exactement l'ensemble des "Taches 
 - [ ] Se renseigner sur les différentes solutions existantes en terme de mécanismes de gestion de threads.
 - [ ] Comparer ces solutions et choisir la plus appropriée dans notre cas
 - [ ] Implémenter le mécanisme choisi 
+
+
 
 ### Tache : Commande des roues
 
