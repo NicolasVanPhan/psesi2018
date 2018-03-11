@@ -1,5 +1,11 @@
 
-Rapport de Spécification PSESI
+**Phan Nicolas**
+
+**Aggoun Bryan**
+
+**2017 / 2018**
+
+Rapport de Spécification : Projet de véhicule autonome
 ================================================================================
 
 
@@ -71,7 +77,7 @@ Par conséquent, le véhicule aura besoin de se localiser pour construire la car
 De plus, un second objectif sera de mettre en place un mécanisme logiciel permettant l'exécution de plusieurs taches en parallèle car le véhicule devra en effet exécuter plusieurs actions en même temps.
 
 
-Identification des taches du projet
+Identification et validation des taches du projet
 --------------------------------------------------------------------------------
 
 ### Tache : Mise en place d'un mécanisme de gestion de threads
@@ -108,7 +114,14 @@ L'ensemble des taches présentes plus bas est exactement l'ensemble des "Taches 
 - [ ] Comparer ces solutions et choisir la plus appropriée dans notre cas
 - [ ] Implémenter le mécanisme choisi 
 
+#### Validation :
 
+Le but ici est de créer des threads effectuant quelques affichages pour vérifier que l'environnement mis en place est fonctionnel.
+
+- [ ] Ecriture d'un thread affichant "Hello world" en boucle. Vérifier que le thread s'exécute correctement
+- [ ] Ecriture de plusieurs threads ayant des affichages différents. Vérifier qu'ils s'exécutent correctement.
+- [ ] Ecriture d'un thread producteur, lisant l'entrée standard et un thread consommateur, écrivant sur la sortie standard. Tout ce qui est tapé au clavier sera lu par le thread producteur, qui renverra la donnée vers le consommateur qui l'affichera à l'écran. Cela permet de tester la communication entre threads. Vérifier que l'affichage correspond bien à ce qui a été entré au clavier.
+- [ ] Ecriture d'un thread maitre est un thread esclave, affichant chacun leur nom est un timestamp lorsqu'ils commutent. Le thread maitre passe la main à l'esclave toutes les secondes pendant 0.1 seconde. Vérifier que l'ordonnancement imposé par le maître est bien en place.
 
 ### Tache : Commande des roues
 
@@ -270,3 +283,12 @@ Ces tests seront effectuée dans des environnements de plus en plus complexes.
   - [ ] Placer le robot dans l'environnement le plus simple : un carré assez petit pour que les murs soient à portée du capteur
   - [ ] Faire de même avec un obstacle central cette fois-ci
   - [ ] Idem avec un terrain carré plus grand que la portée du capteur et des obstacles tous les mètres
+  - [ ] Idem avec un terrain octogonal. Cela sert à vérifier le bon fonctionnement du véhicule dans un environnement comportant des angles à 45 degrés.
+
+Communication entre les taches
+--------------------------------------------------------------------------------
+
+Le diagramme suivant schématise les données échangées entre les différentes taches.
+
+![Diagramme de communication entre les taches](./taches.png)
+
