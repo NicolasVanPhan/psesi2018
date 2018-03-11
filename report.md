@@ -211,6 +211,72 @@ l'interfacage électronique à mettre en place pour alimenter le capteur et réc
   - [ ] Effectuer cet appel avec un angle de -pi/2 rad/sec
   - [ ] Effectuer cet appel avec des angles intermédiates (ex: pi/4, pi/6). 
 
+
+
+
+
+
+
+
+
+
+
+
+### Tâche : Localisation
+ 
+#### Objectif :
+
+Obtenir, en comparant l’instant t et l’instant t-1, le déplacement de la voiture à chaque instant (en translation et en rotation), puis en déduire la position par rapport à son point de départ.
+ 
+En sortie de cette tâche à réaliser se présentera un thread mettant constamment à jour les variables contenant le déplacement élémentaire du véhicule et sa position sur la carte.
+ 
+#### Travail à réaliser :
+
+- [ ] Etudier les différentes méthodes de localisation d’un système et choisir la méthode la plus adaptée pour ce projet.
+  - [ ] Lister les données sur l’état du système que nous aurons à disposition.
+  - [ ] Trouver un modèle, une méthode de localisation adapté à notre système :
+    - Utilisation de ressources connues
+    - Méthode peu coûteuse en mémoire
+    - Une précision des calculs suffisante
+  - [ ] Lister les données indispensables à connaître pour retrouver la position du véhicule (Position à l’instant t-1, déplacement en translation et rotation effectué à l’instant t-1, …).
+- [ ] Ecrire un programme permettant de calculer et mettre à jour la position du véhicule.
+  - [ ] Choix d’une méthode logiciel pour récupérer les données nécessaires à la localisation du véhicule venant des autres modules du systèmes (un tableau en variable global, une structure, …)
+  - [ ] Trouver une méthode mathématique permettant de retrouver le déplacement en x et y effectuer par la voiture entre un instant t-1 et t.
+  - [ ] Retrouver la position du véhicule à l’instant t grâce déplacement en x et y calculés précédemment.
+  - [ ] Implémenter logiciellement cette méthode de localisation.
+    
+#### Validation :
+
+- [ ] Faire un programme de test permettant de s’assurer qu’il est possible, avec la méthode trouver, de récupérer à tout instant les données du système nécessaire pour la tâche de localisation du véhicule.
+- [ ] Déplacer le véhicule aléatoirement et connaître sa position à tout instant
+  - [ ] Déplacer le véhicule de manière linéaire sans rotation et connaître sa position
+    - [ ] Faire un déplacement linéaire d’une certaine distance à vitesse continue et calculer la position du système
+    - [ ] Comparer la position calculée avec la position attendue
+    - [ ] Répéter plusieurs fois l’opération et s’assurer qu’au bout d’un certain nombre de translation la position calculée ne devient pas obsolète en raison des incertitudes provenant de chacun des calculs réalisés.
+  - [ ] Déplacer le véhicule dans toutes les directions et connaître sa position
+    - [ ] Faire un déplacement quelconque avec rotation, vitesse constante et calculer sa position
+    - [ ] Comparer la position calculée avec la position attendue
+    - [ ] Répéter plusieurs fois l’opération et s’assurer qu’au bout d’un certain nombre de translation la position calculée ne devient pas obsolète en raison des incertitudes provenant de chacun des calculs réalisés.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ### Tache : Communication avec le PC
 
 #### Objectif :
