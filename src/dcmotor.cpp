@@ -100,7 +100,7 @@ void DC_loop ()
     
       /* If message received, set the commande accordingly */
       DC_msg_flag = 0;  // acknowledge the message reception
-      value = analogRead(A0);
+      value = analogRead(PIN_POT);
       switch (DC_msg) {
         case 'l' :
           angleCmd = 90;
