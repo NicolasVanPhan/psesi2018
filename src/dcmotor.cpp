@@ -104,23 +104,24 @@ void DC_loop ()
       switch (DC_msg) {
         case 'l' :
           angleCmd = 90;
-          leftSpeedCmd = - value / 1024.0 * 255 / 2;
-          rightSpeedCmd = + value / 1024.0 * 255 / 2;
+          leftSpeedCmd = - value / 1024.0 * 255;
+          rightSpeedCmd = + value / 1024.0 * 255;
           break;
         case 'r' :
           angleCmd = 90;
-          leftSpeedCmd = + value / 1024.0 * 255 / 2;
-          rightSpeedCmd = - value / 1024.0 * 255 / 2;
+          leftSpeedCmd = + value / 1b
+          024.0 * 255;
+          rightSpeedCmd = - value / 1024.0 * 255;
           break;
         case 'f' :
           angleCmd = 0;
-          leftSpeedCmd = + value / 1024.0 * 255 / 2;
-          rightSpeedCmd = + value / 1024.0 * 255 / 2;
+          leftSpeedCmd = + value / 1024.0 * 255;
+          rightSpeedCmd = + value / 1024.0 * 255;
           break;
         case 'b' :
           angleCmd = 0;
-          leftSpeedCmd = - value / 1024.0 * 255 / 2;
-          rightSpeedCmd = - value / 1024.0 * 255 / 2;
+          leftSpeedCmd = - value / 1024.0 * 255;
+          rightSpeedCmd = - value / 1024.0 * 255;
           break;
         case 's' :
           angleCmd = angle;
