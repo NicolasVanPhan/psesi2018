@@ -109,8 +109,7 @@ void DC_loop ()
           break;
         case 'r' :
           angleCmd = 90;
-          leftSpeedCmd = + value / 1b
-          024.0 * 255;
+          leftSpeedCmd = + value / 1024.0 * 255;
           rightSpeedCmd = - value / 1024.0 * 255;
           break;
         case 'f' :
