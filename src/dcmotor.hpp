@@ -27,9 +27,13 @@
 #define DCSTATE_WAITCMD           0
 #define DCSTATE_TURNWHEEL         1
 #define DCSTATE_TURNWHEEL_DELAY   2
+#define DCSTATE_CHGSPEED          3
+#define DCSTATE_CHGSPEED_DELAY    4
 
-#define DC_TURNDELAY    50
-#define DC_TURNPACE     5.0
+#define DC_TURNDELAY      50
+#define DC_TURNPACE       5.0
+#define DC_CHGSPEEDDELAY  50
+#define DC_CHGSPEEDPACE   10
 
 /* ----------- Example functions -------------------------------------------- */
 void    example1();   // control the vehicule through the USB serial

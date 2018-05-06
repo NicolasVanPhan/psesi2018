@@ -89,7 +89,9 @@ void DC_loop ()
   static float  angleCmd;
   static int    leftSpeedCmd;
   static int    rightSpeedCmd;
-  static int    angle;
+  static int    angle = 0;
+  static int    leftSpeed = 0;
+  static int    rightSpeed = 0;
          int    value;
   
   switch (state) {
@@ -104,13 +106,13 @@ void DC_loop ()
       switch (DC_msg) {
         case 'l' :
           angleCmd = 90;
-          leftSpeedCmd = - value / 1024.0 * 255;
-          rightSpeedCmd = + value / 1024.0 * 255;
+          leftSpeedCmd = - value / 1024.0 * 255 / 2;
+          rightSpeedCmd = + value / 1024.0 * 255 / 2;
           break;
         case 'r' :
           angleCmd = 90;
-          leftSpeedCmd = + value / 1024.0 * 255;
-          rightSpeedCmd = - value / 1024.0 * 255;
+          leftSpeedCmd = + value / 1024.0 * 255 / 2;
+          rightSpeedCmd = - value / 1024.0 * 255 / 2;
           break;
         case 'f' :
           angleCmd = 0;
@@ -146,19 +148,42 @@ void DC_loop ()
         state = DCSTATE_TURNWHEEL_DELAY;
         break;
       }
-      /* If the front wheel is corectly oriented */
-      /* Move the back wheels */
-      DC_SetLeftSpeed(leftSpeedCmd);
-      DC_SetRightSpeed(rightSpeedCmd);
-      DC_Refresh();
-      /* The request is now fullfilled, go back to idle state */
-      state = DCSTATE_WAITCMD;
+      /* Now that the front wheel is correctly oriented, accelerate or decelerate */
+      state = DCSTATE_CHGSPEED;
       break;
       
     /* ============== TURNWHEEL DELAY STATE ======== */
     case DCSTATE_TURNWHEEL_DELAY :
       if (!wait_for(DC_TURNDELAY)) break;
       state = DCSTATE_TURNWHEEL;
+      break;
+
+    /* ============== SPEED CHANGE STATE ======== */
+    case DCSTATE_CHGSPEED :
+      /* While the current speed is not the speed wanted */
+      if (leftSpeed != leftSpeedCmd or rightSpeed != rightSpeedCmd) {
+        /* Accelerate/Decelerate by a step */
+        leftSpeed += leftSpeed < leftSpeedCmd ? DC_CHGSPEEDPACE : -DC_CHGSPEEDPACE;
+        rightSpeed += rightSpeed < rightSpeedCmd ? DC_CHGSPEEDPACE : -DC_CHGSPEEDPACE;
+        /* Readjust the speed to speedCmd if they were close enough */
+        if (abs(leftSpeedCmd - leftSpeed) < DC_CHGSPEEDPACE)  leftSpeed = leftSpeedCmd;
+        if (abs(rightSpeedCmd - rightSpeed) < DC_CHGSPEEDPACE)  rightSpeed = rightSpeedCmd;
+        /* Validate the changes */
+        DC_SetLeftSpeed(leftSpeed);
+        DC_SetRightSpeed(rightSpeed);
+        DC_Refresh();
+        state = DCSTATE_CHGSPEED_DELAY;
+        break;
+      }
+
+      /* Now that the speed is correct, go back to idle state */
+      state = DCSTATE_WAITCMD;
+      break;
+
+    /* ============== SPEED CHANGE DELAY STATE ======== */
+    case DCSTATE_CHGSPEED_DELAY :
+      if (!wait_for(DC_CHGSPEEDDELAY)) break;
+        state = DCSTATE_CHGSPEED;
       break;
   }
 }
