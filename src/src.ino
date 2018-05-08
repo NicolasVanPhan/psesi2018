@@ -12,24 +12,19 @@ void setup() {
 void loop() {
 
   BT_loop();
-  //BT_example();
-  //BT_example2();
-
   DC_loop();
-  //example1();
 
   /* --------- Command the wheels from bluetooth ------ */
   String  str;
   char    cmd;
   long    duration;
   if (BT_available()) {
+    /* Decode message */
     str = BT_read();
-    Serial.print(str);
     cmd = str.charAt(0);
     str.remove(0, 1);
-    Serial.println(str);
     duration = str.toInt();
-    Serial.println(duration);
+    /* Command the wheels */
     DC_dstop(duration);
     switch (cmd) {
       case 'l' :
