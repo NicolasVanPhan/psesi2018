@@ -17,6 +17,7 @@
 
 #include "pinout.hpp"
 #include "waitfor.hpp"
+#include "bluetooth.hpp"
 #include <SPI.h>
 #include <Wire.h>
 #include <Servo.h>
@@ -29,6 +30,10 @@
 #define DCSTATE_TURNWHEEL_DELAY   2
 #define DCSTATE_CHGSPEED          3
 #define DCSTATE_CHGSPEED_DELAY    4
+
+#define DC_DSTOP_IDLE             0
+#define DC_DSTOP_PENDING          1
+#define DC_DSTOP_RUNNING          2
 
 #define DC_TURNDELAY      50
 #define DC_TURNPACE       5.0
@@ -44,16 +49,18 @@ void    DC_backward();
 void    DC_left();
 void    DC_right();
 void    DC_stop();
+void    DC_init ();
 void    DC_loop(); // that function should always run
 
 /* ----------- API 2 : Raw control over the DC Motor speed  ----------------- */
-void    DC_Init ();
 int     DC_SetLeftSpeed (int param_speed);
 int     DC_SetRightSpeed (int param_speed);
 int     DC_SetWheelAngle (int angle);
 void    DC_Refresh ();
 
 /* ------------------------- Internal functions ----------------------------- */
+void    DC_dstop(unsigned long pdelay);
+void    DC_dstop_loop();
 int     DC_car_is_stopped();
 
 #endif

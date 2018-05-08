@@ -4,7 +4,7 @@
 #include "bluetooth.hpp"
 
 void setup() {
-  DC_Init();
+  DC_init();
   BT_init();
   Serial.begin(9600);
 }
@@ -20,9 +20,18 @@ void loop() {
 
   /* --------- Command the wheels from bluetooth ------ */
   String  str;
+  char    cmd;
+  long    duration;
   if (BT_available()) {
     str = BT_read();
-    switch (str.charAt(0)) {
+    Serial.print(str);
+    cmd = str.charAt(0);
+    str.remove(0, 1);
+    Serial.println(str);
+    duration = str.toInt();
+    Serial.println(duration);
+    DC_dstop(duration);
+    switch (cmd) {
       case 'l' :
         DC_left();
         break;

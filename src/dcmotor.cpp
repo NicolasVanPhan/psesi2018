@@ -9,6 +9,14 @@ static int    DC_msg_flag;          /* Indicates whether there's a new message
                                        for DC_loop() to handle */
 static char   DC_msg;               /* The message to be treated by DC_loop() */
 
+static char   DC_fwheel_aligned;    /* = 1 if front wheel is well oriented */
+static char   DC_dstop_state;
+static char   DC_dstop_flag;
+static unsigned long DC_dstop_time; /* When should the car stop */
+static unsigned long DC_dstop_delay; /* In how much time from the moment the
+                                        front wheel gets aligned should the
+                                        car stop */
+
 static Servo  myservo;
 
 /* -------------------------------------------------------------------------- */
@@ -78,6 +86,29 @@ void    DC_stop()
 }
 
 /**
+ * This functions activates the DC motors, it should be called once in setup()
+ *
+ * @return          - none
+ */
+void    DC_init ()
+{
+  pinMode(PIN_EN12, OUTPUT);
+  pinMode(PIN_1A, OUTPUT);
+  pinMode(PIN_2A, OUTPUT);
+  pinMode(PIN_EN34, OUTPUT);
+  pinMode(PIN_3A, OUTPUT);
+  pinMode(PIN_4A, OUTPUT);
+  myservo.attach(PIN_FWHEEL);
+
+  DC_LeftMotorSpeed = 0;
+  DC_RightMotorSpeed = 0;
+  DC_FrontWheelAngle = 0;
+  DC_dstop_flag = 0;
+  DC_dstop_state = DC_DSTOP_IDLE;
+  DC_Refresh();
+}
+
+/**
  * This function constantly listens to move commands received through
  * the DC_msg_flag and DC_msg variables, and treats these commands.
  * 
@@ -93,10 +124,13 @@ void DC_loop ()
   static int    leftSpeed = 0;
   static int    rightSpeed = 0;
          int    value;
+
+  DC_dstop_loop();
   
   switch (state) {
     /* ============== WAITCMD STATE ================ */
     case DCSTATE_WAITCMD :
+
       /* If no message, keep waiting... */
       if (not DC_msg_flag)   break;
     
@@ -135,6 +169,7 @@ void DC_loop ()
           break;
       }
       /* Then start turning the front wheel... */
+      DC_fwheel_aligned = 0;
       state = DCSTATE_TURNWHEEL;
       break;
 
@@ -153,6 +188,7 @@ void DC_loop ()
         break;
       }
       /* Now that the front wheel is correctly oriented, accelerate or decelerate */
+      DC_fwheel_aligned = 1;  // Now the front wheel is well aligned
       state = DCSTATE_CHGSPEED;
       break;
       
@@ -205,27 +241,6 @@ void DC_loop ()
 /* -------------------------------------------------------------------------- */
 /* ----------- API 2 : Raw control over the DC Motor speed ------------------ */
 /* -------------------------------------------------------------------------- */
-
-/**
- * This functions activates the DC motors, it should be called once in setup()
- * 
- * @return          - none
- */
-void    DC_Init ()
-{
-  pinMode(PIN_EN12, OUTPUT);
-  pinMode(PIN_1A, OUTPUT);
-  pinMode(PIN_2A, OUTPUT);
-  pinMode(PIN_EN34, OUTPUT);
-  pinMode(PIN_3A, OUTPUT);
-  pinMode(PIN_4A, OUTPUT);
-  myservo.attach(9);
-
-  DC_LeftMotorSpeed = 0;
-  DC_RightMotorSpeed = 0;
-  DC_FrontWheelAngle = 0;
-  DC_Refresh();
-}
 
 /**
  * This functions sets the speed of the left motor
@@ -315,8 +330,59 @@ void    DC_Refresh ()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ----------- API 1 : Direct control over the DC Motor speed --------------- */
+/* ----------- Internal functions ------------------------------------------- */
 /* -------------------------------------------------------------------------- */
+
+/**
+ * This function programms a stop for later
+ *
+ * @param pdelay  - in how much time (in milliseconds) should the car stop
+ *                  (not taking into account the time to align the front wheel)
+ *                  (give pdelay = 0 to cancel the current deferred stop)
+ */
+void    DC_dstop(unsigned long pdelay)
+{
+  if (pdelay == 0) { // Cancel the current programmed stop
+    DC_dstop_state = DC_DSTOP_IDLE; // Reset the DSTOP FSM
+    DC_dstop_flag = 0;
+  }
+  else {            // Else program a new deferred stop
+    DC_dstop_delay = pdelay;
+    DC_dstop_flag = 1;
+  }
+}
+
+/**
+ * This function should be called on loop
+ */
+void    DC_dstop_loop()
+{
+  switch (DC_dstop_state) {
+    case DC_DSTOP_IDLE :
+      if (DC_dstop_flag) {
+        DC_dstop_flag = 0;
+        DC_dstop_state = DC_DSTOP_PENDING;
+        break;
+      }
+      break;
+
+    case DC_DSTOP_PENDING :
+      if (DC_fwheel_aligned) {
+        DC_dstop_time = millis() + DC_dstop_delay;
+        DC_dstop_state = DC_DSTOP_RUNNING;
+        break;
+      }
+      break;
+
+    case  DC_DSTOP_RUNNING :
+      if (millis() >= DC_dstop_time) {
+        DC_stop();
+        DC_dstop_state = DC_DSTOP_IDLE;
+        break;
+      }
+      break;
+  }
+}
 
 int     DC_car_is_stopped()
 {
