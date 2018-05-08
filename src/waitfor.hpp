@@ -17,6 +17,8 @@
 #include <SPI.h>
 #include <Wire.h>
 
-int   wait_for(unsigned long duration);
+#define WAITFOR_MAX_TIMER   10
+
+int   wait_for(int id, unsigned long duration);
 
 #endif

@@ -154,7 +154,7 @@ void DC_loop ()
       
     /* ============== TURNWHEEL DELAY STATE ======== */
     case DCSTATE_TURNWHEEL_DELAY :
-      if (!wait_for(DC_TURNDELAY)) break;
+      if (!wait_for(DC_ID, DC_TURNDELAY)) break;
       state = DCSTATE_TURNWHEEL;
       break;
 
@@ -182,7 +182,7 @@ void DC_loop ()
 
     /* ============== SPEED CHANGE DELAY STATE ======== */
     case DCSTATE_CHGSPEED_DELAY :
-      if (!wait_for(DC_CHGSPEEDDELAY)) break;
+      if (!wait_for(DC_ID, DC_CHGSPEEDDELAY)) break;
         state = DCSTATE_CHGSPEED;
       break;
   }

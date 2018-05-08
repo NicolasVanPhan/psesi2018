@@ -15,6 +15,9 @@
 #ifndef H_PINOUT
 #define H_PINOUT
 
+#define DC_ID       0
+#define BT_ID       1
+
 /* ------------------------- DC Motor Mapping ------------------------------- */
 #define PIN_EN12    22
 #define PIN_1A      5
