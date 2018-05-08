@@ -22,7 +22,7 @@ void    BT_example2 () {
   if (Serial.available()) {
     c = (char)Serial.read();
     str.concat(c);
-    if (c == 10) {
+    if (c == 10) {  // NL newline character, considered as the msg-ending char
       BT_write(str);
       str = "";
     }

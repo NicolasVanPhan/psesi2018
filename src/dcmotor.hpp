@@ -33,7 +33,7 @@
 #define DC_TURNDELAY      50
 #define DC_TURNPACE       5.0
 #define DC_CHGSPEEDDELAY  50
-#define DC_CHGSPEEDPACE   5
+#define DC_CHGSPEEDPACE   8
 
 /* ----------- Example functions -------------------------------------------- */
 void    example1();   // control the vehicule through the USB serial
