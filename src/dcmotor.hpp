@@ -38,14 +38,7 @@
 /* ----------- Example functions -------------------------------------------- */
 void    example1();   // control the vehicule through the USB serial
 
-/* ----------- API 1 : Raw control over the Motors -------------------------- */
-void    DC_Init ();
-int     DC_SetLeftSpeed (int param_speed);
-int     DC_SetRightSpeed (int param_speed);
-int     DC_SetWheelAngle (int angle);
-void    DC_Refresh ();
-
-/* ----------- API 2 : Commande the vehicle move ---------------------------- */
+/* ----------- API 1 : Commande the vehicle move ---------------------------- */
 void    DC_forward();
 void    DC_backward();
 void    DC_left();
@@ -53,6 +46,14 @@ void    DC_right();
 void    DC_stop();
 void    DC_loop(); // that function should always run
 
+/* ----------- API 2 : Raw control over the DC Motor speed  ----------------- */
+void    DC_Init ();
+int     DC_SetLeftSpeed (int param_speed);
+int     DC_SetRightSpeed (int param_speed);
+int     DC_SetWheelAngle (int angle);
+void    DC_Refresh ();
+
 /* ------------------------- Internal functions ----------------------------- */
+int     DC_car_is_stopped();
 
 #endif

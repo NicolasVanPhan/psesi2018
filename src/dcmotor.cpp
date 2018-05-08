@@ -41,7 +41,7 @@ void    example1() {
 }
 
 /* -------------------------------------------------------------------------- */
-/* ----------- API 2 : Command the vehicle move ----------------------------- */
+/* ----------- API 1 : Command the vehicle move ----------------------------- */
 /* -------------------------------------------------------------------------- */
 
 /**
@@ -105,21 +105,25 @@ void DC_loop ()
       value = analogRead(PIN_POT);
       switch (DC_msg) {
         case 'l' :
+          if (!DC_car_is_stopped()) break;
           angleCmd = 90;
           leftSpeedCmd = - value / 1024.0 * 255 / 1.5;
           rightSpeedCmd = + value / 1024.0 * 255 / 1.5;
           break;
         case 'r' :
+          if (!DC_car_is_stopped()) break;
           angleCmd = 90;
           leftSpeedCmd = + value / 1024.0 * 255 / 1.5;
           rightSpeedCmd = - value / 1024.0 * 255 / 1.5;
           break;
         case 'f' :
+          if (!DC_car_is_stopped()) break;
           angleCmd = 0;
           leftSpeedCmd = + value / 1024.0 * 255;
           rightSpeedCmd = + value / 1024.0 * 255;
           break;
         case 'b' :
+          if (!DC_car_is_stopped()) break;
           angleCmd = 0;
           leftSpeedCmd = - value / 1024.0 * 255;
           rightSpeedCmd = - value / 1024.0 * 255;
@@ -199,7 +203,7 @@ void DC_loop ()
 }
 
 /* -------------------------------------------------------------------------- */
-/* ----------- API 1 : Direct control over the DC Motor speed --------------- */
+/* ----------- API 2 : Raw control over the DC Motor speed ------------------ */
 /* -------------------------------------------------------------------------- */
 
 /**
@@ -308,5 +312,14 @@ void    DC_Refresh ()
   analogWrite(PIN_3A, val_3a);
   analogWrite(PIN_4A, val_4a);
   myservo.write(val_servo);
+}
+
+/* -------------------------------------------------------------------------- */
+/* ----------- API 1 : Direct control over the DC Motor speed --------------- */
+/* -------------------------------------------------------------------------- */
+
+int     DC_car_is_stopped()
+{
+  return (DC_LeftMotorSpeed == 0 && DC_RightMotorSpeed == 0);
 }
 
