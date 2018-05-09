@@ -23,7 +23,7 @@ void    BT_example2 () {
     c = (char)Serial.read();
     str.concat(c);
     if (c == 10) {  // NL newline character, considered as the msg-ending char
-      BT_write(str);
+      BT_print(str);
       str = "";
     }
   }
@@ -46,7 +46,27 @@ void    BT_init() {
   BT_flag = 0;
 }
 
-void    BT_write(String msg) {
+void    BT_print(String msg) {
+  Serial1.print(msg);
+}
+
+void    BT_print(char msg) {
+  Serial1.print(msg);
+}
+
+void    BT_print(int msg) {
+  Serial1.print(msg);
+}
+
+void    BT_print(unsigned int msg) {
+  Serial1.print(msg);
+}
+
+void    BT_print(long msg) {
+  Serial1.print(msg);
+}
+
+void    BT_print(unsigned long msg) {
   Serial1.print(msg);
 }
 

@@ -29,7 +29,12 @@ void    BT_example2();
 /* ----------- Bluetooth API ------------------------------------------------ */
 int     BT_available();
 String  BT_read();
-void    BT_write(String msg);
+void    BT_print(String msg);
+void    BT_print(char msg);
+void    BT_print(int msg);
+void    BT_print(unsigned int msg);
+void    BT_print(long msg);
+void    BT_print(unsigned long msg);
 void    BT_init();    // This should appear in setup()
 void    BT_loop();    // This should appear in loop()
 
