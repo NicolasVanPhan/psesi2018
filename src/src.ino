@@ -30,11 +30,11 @@ void loop() {
     switch (cmd) {
       /* Command the wheels */
       case 'l' :
-        DC_dstop(DC_distance_to_duration(nbr));
+        DC_dstop(nbr);
         DC_left();
         break;
       case 'r' :
-        DC_dstop(DC_distance_to_duration(nbr));
+        DC_dstop(nbr);
         DC_right();
         break;
       case 'f' :

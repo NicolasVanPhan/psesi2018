@@ -18,7 +18,7 @@
 #include <Servo.h>
 #include "pinout.hpp"
 
-#define   US_ANGLE_OFFSET   95
+#define   US_ANGLE_OFFSET   90
 
 void  US_init();
 long  US_read();
