@@ -42,7 +42,7 @@
 #define DC_ANGLE_TURN     90
 
 /* Speed parameters */
-#define DC_VMAX           380 // [mm/s]
+#define DC_VMAX           375 // [mm/s]
 #define DC_TURNDELAY      50
 #define DC_TURNPACE       5.0
 #define DC_CHGSPEEDDELAY  50
