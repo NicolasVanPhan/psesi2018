@@ -35,10 +35,13 @@
 #define DC_DSTOP_PENDING          1
 #define DC_DSTOP_RUNNING          2
 
+#define DC_ANGLE_FWD      -11
+#define DC_ANGLE_TURN     90
+
 #define DC_TURNDELAY      50
 #define DC_TURNPACE       5.0
-#define DC_CHGSPEEDDELAY  50
-#define DC_CHGSPEEDPACE   8
+#define DC_CHGSPEEDDELAY  20
+#define DC_CHGSPEEDPACE   10000
 
 /* ----------- Example functions -------------------------------------------- */
 void    example1();   // control the vehicule through the USB serial

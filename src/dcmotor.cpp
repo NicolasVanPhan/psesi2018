@@ -102,7 +102,7 @@ void    DC_init ()
 
   DC_LeftMotorSpeed = 0;
   DC_RightMotorSpeed = 0;
-  DC_FrontWheelAngle = 0;
+  DC_FrontWheelAngle = DC_ANGLE_FWD;
   DC_dstop_flag = 0;
   DC_dstop_state = DC_DSTOP_IDLE;
   DC_Refresh();
@@ -140,25 +140,25 @@ void DC_loop ()
       switch (DC_msg) {
         case 'l' :
           if (!DC_car_is_stopped()) break;
-          angleCmd = 90;
+          angleCmd = DC_ANGLE_TURN;
           leftSpeedCmd = - value / 1024.0 * 255 / 1.5;
           rightSpeedCmd = + value / 1024.0 * 255 / 1.5;
           break;
         case 'r' :
           if (!DC_car_is_stopped()) break;
-          angleCmd = 90;
+          angleCmd = DC_ANGLE_TURN;
           leftSpeedCmd = + value / 1024.0 * 255 / 1.5;
           rightSpeedCmd = - value / 1024.0 * 255 / 1.5;
           break;
         case 'f' :
           if (!DC_car_is_stopped()) break;
-          angleCmd = 0;
+          angleCmd = DC_ANGLE_FWD;
           leftSpeedCmd = + value / 1024.0 * 255;
           rightSpeedCmd = + value / 1024.0 * 255;
           break;
         case 'b' :
           if (!DC_car_is_stopped()) break;
-          angleCmd = 0;
+          angleCmd = DC_ANGLE_FWD;
           leftSpeedCmd = - value / 1024.0 * 255;
           rightSpeedCmd = - value / 1024.0 * 255;
           break;
