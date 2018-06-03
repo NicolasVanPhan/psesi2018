@@ -25,23 +25,29 @@
 #define DC_MAX_SPEED    255.0
 #define DC_MAX_ANGLE    90
 
+/* Speed control FSM states */
 #define DCSTATE_WAITCMD           0
 #define DCSTATE_TURNWHEEL         1
 #define DCSTATE_TURNWHEEL_DELAY   2
 #define DCSTATE_CHGSPEED          3
 #define DCSTATE_CHGSPEED_DELAY    4
 
+/* Deferred stop FSM states */
 #define DC_DSTOP_IDLE             0
 #define DC_DSTOP_PENDING          1
 #define DC_DSTOP_RUNNING          2
 
+/* Front wheel reference angles */
 #define DC_ANGLE_FWD      -11
 #define DC_ANGLE_TURN     90
 
+/* Speed parameters */
+#define DC_VMAX           380 // [mm/s]
 #define DC_TURNDELAY      50
 #define DC_TURNPACE       5.0
-#define DC_CHGSPEEDDELAY  20
+#define DC_CHGSPEEDDELAY  50
 #define DC_CHGSPEEDPACE   10000
+#define DC_ROTSPEED_RATIO 1.5
 
 /* ----------- Example functions -------------------------------------------- */
 void    example1();   // control the vehicule through the USB serial
@@ -65,5 +71,6 @@ void    DC_Refresh ();
 void    DC_dstop(unsigned long pdelay);
 void    DC_dstop_loop();
 int     DC_car_is_stopped();
+int     DC_distance_to_duration(long D);
 
 #endif

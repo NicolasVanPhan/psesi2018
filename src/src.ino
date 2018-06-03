@@ -17,15 +17,15 @@ void loop() {
   /* --------- Command the wheels from bluetooth ------ */
   String  str;
   char    cmd;
-  long    duration;
+  long    dist;
   if (BT_available()) {
     /* Decode message */
     str = BT_read();
     cmd = str.charAt(0);
     str.remove(0, 1);
-    duration = str.toInt();
+    dist = str.toInt();
     /* Command the wheels */
-    DC_dstop(duration);
+    DC_dstop(DC_distance_to_duration(dist));
     switch (cmd) {
       case 'l' :
         DC_left();

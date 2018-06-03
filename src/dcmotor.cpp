@@ -123,7 +123,7 @@ void DC_loop ()
   static int    angle = 0;
   static int    leftSpeed = 0;
   static int    rightSpeed = 0;
-         int    value;
+         int    vmax;
 
   DC_dstop_loop();
   
@@ -136,31 +136,31 @@ void DC_loop ()
     
       /* If message received, set the commande accordingly */
       DC_msg_flag = 0;  // acknowledge the message reception
-      value = analogRead(PIN_POT);
+      vmax = analogRead(PIN_POT);
       switch (DC_msg) {
         case 'l' :
           if (!DC_car_is_stopped()) break;
           angleCmd = DC_ANGLE_TURN;
-          leftSpeedCmd = - value / 1024.0 * 255 / 1.5;
-          rightSpeedCmd = + value / 1024.0 * 255 / 1.5;
+          leftSpeedCmd = - vmax / 1023.0 * 255 / DC_ROTSPEED_RATIO;
+          rightSpeedCmd = + vmax / 1023.0 * 255 / DC_ROTSPEED_RATIO;
           break;
         case 'r' :
           if (!DC_car_is_stopped()) break;
           angleCmd = DC_ANGLE_TURN;
-          leftSpeedCmd = + value / 1024.0 * 255 / 1.5;
-          rightSpeedCmd = - value / 1024.0 * 255 / 1.5;
+          leftSpeedCmd = + vmax / 1023.0 * 255 / DC_ROTSPEED_RATIO;
+          rightSpeedCmd = - vmax / 1023.0 * 255 / DC_ROTSPEED_RATIO;
           break;
         case 'f' :
           if (!DC_car_is_stopped()) break;
           angleCmd = DC_ANGLE_FWD;
-          leftSpeedCmd = + value / 1024.0 * 255;
-          rightSpeedCmd = + value / 1024.0 * 255;
+          leftSpeedCmd = + vmax / 1023.0 * 255;
+          rightSpeedCmd = + vmax / 1023.0 * 255;
           break;
         case 'b' :
           if (!DC_car_is_stopped()) break;
           angleCmd = DC_ANGLE_FWD;
-          leftSpeedCmd = - value / 1024.0 * 255;
-          rightSpeedCmd = - value / 1024.0 * 255;
+          leftSpeedCmd = - vmax / 1023.0 * 255;
+          rightSpeedCmd = - vmax / 1023.0 * 255;
           break;
         case 's' :
           angleCmd = angle;
@@ -387,5 +387,53 @@ void    DC_dstop_loop()
 int     DC_car_is_stopped()
 {
   return (DC_LeftMotorSpeed == 0 && DC_RightMotorSpeed == 0);
+}
+
+int     DC_distance_to_duration(long D) // [mm]
+{
+  long   vmax;
+  long   dv;
+  long   dt;
+  long   T1;
+  long   T; // [ms]
+
+  D *= 1000;                                      // [um]
+  vmax = analogRead(PIN_POT) / 1023.0 * DC_VMAX;  // [um/ms]
+  dv = DC_CHGSPEEDPACE / 255.0 * DC_VMAX;         // [um/ms]
+  dt = DC_CHGSPEEDDELAY;                          // [ms]
+  T1 = (vmax * 1.0 / dv - 1) * DC_CHGSPEEDDELAY;  // [ms]
+  if (T1 < 0)
+    T1 = 0;
+
+  if (D >= vmax * T1)
+    T = D / vmax;
+  else
+    T = sqrt(D * T1 / vmax);
+
+  BT_print("PIN_POT: ");
+  BT_print(analogRead(PIN_POT));
+  BT_print("\n");
+
+  BT_print("vmax: ");
+  BT_print(vmax);
+  BT_print("\n");
+
+  BT_print("dv: ");
+  BT_print(dv);
+  BT_print("\n");
+
+  BT_print("dt: ");
+  BT_print(dt);
+  BT_print("\n");
+
+  BT_print("T1: ");
+  BT_print(T1);
+  BT_print("\n");
+
+  BT_print("duration: ");
+  BT_print(T);
+  BT_print("\n");
+
+  return T;
 }
 
