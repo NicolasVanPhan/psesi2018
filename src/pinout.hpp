@@ -17,6 +17,7 @@
 
 #define DC_ID       0
 #define BT_ID       1
+#define US_ID       2
 
 /* ------------------------- DC Motor Mapping ------------------------------- */
 #define PIN_EN12    22
@@ -32,5 +33,10 @@
 /* ------------------------- Bluetooth module mapping ----------------------- */
 #define PIN_BT_RX  19   /* If you change these pins, you should change */
 #define PIN_BT_TX  18   /* Serial1 to SerialX in bluetooth.cpp */
+
+/* ------------------------- Ultrasonic Sensor Mapping ---------------------- */
+#define PIN_US_TRIG   40
+#define PIN_US_ECHO   42
+#define PIN_US_SERVO  4
 
 #endif
